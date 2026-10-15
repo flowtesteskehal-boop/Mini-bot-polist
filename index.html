@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora Python + HTML</title>
+  <meta name="description" content="Calculadora web com interface em HTML/CSS/JavaScript e cálculos feitos no back-end em Python.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%235eead4'/%3E%3Ctext x='50' y='70' font-size='60' text-anchor='middle' font-family='monospace' fill='%230b1020'%3E%3D%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="background-glow" aria-hidden="true"></div>
+
+  <main class="layout">
+    <section class="calculator" aria-label="Calculadora">
+      <header class="calculator__header">
+        <div class="brand">
+          <span class="brand__dot" aria-hidden="true"></span>
+          <h1>Calculadora <span>Python + HTML</span></h1>
+        </div>
+        <div class="tools">
+          <div class="switch" role="group" aria-label="Modo de ângulo">
+            <button type="button" class="switch__item is-active" data-angle="rad" aria-pressed="true">RAD</button>
+            <button type="button" class="switch__item" data-angle="deg" aria-pressed="false">DEG</button>
+          </div>
+          <button type="button" class="icon-button" id="toggle-scientific" aria-expanded="false" aria-controls="scientific" title="Funções científicas">
+            <span aria-hidden="true">ƒ</span><span class="sr-only">Mostrar funções científicas</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="display" id="display">
+        <div class="display__top">
+          <span class="display__status" id="status" role="status" aria-live="polite"></span>
+          <button type="button" class="copy-button" id="copy" title="Copiar resultado">
+            <span aria-hidden="true">⧉</span><span class="sr-only">Copiar resultado</span>
+          </button>
+        </div>
+        <div class="display__expression" id="expression" aria-hidden="true"></div>
+        <output class="display__result" id="result" aria-live="polite">0</output>
+      </div>
+
+      <div class="pad pad--scientific" id="scientific" hidden>
+        <button type="button" class="key key--fn" data-insert="pi" title="π (3,14159...)">π</button>
+        <button type="button" class="key key--fn" data-insert="e" title="número de Euler">e</button>
+        <button type="button" class="key key--fn" data-insert="**2" title="eleva ao quadrado">x²</button>
+        <button type="button" class="key key--fn" data-insert="**" title="potência">xʸ</button>
+        <button type="button" class="key key--fn" data-insert="sqrt(" title="raiz quadrada">√x</button>
+
+        <button type="button" class="key key--fn" data-insert="ln(" title="logaritmo natural">ln</button>
+        <button type="button" class="key key--fn" data-insert="log(" title="logaritmo na base 10 (log(x, base) para outras bases)">log</button>
+        <button type="button" class="key key--fn" data-insert="10**" title="dez elevado a">10ˣ</button>
+        <button type="button" class="key key--fn" data-insert="exp(" title="e elevado a">eˣ</button>
+        <button type="button" class="key key--fn" data-insert="factorial(" title="fatorial">x!</button>
+
+        <button type="button" class="key key--fn" data-insert="sin(" title="seno">sin</button>
+        <button type="button" class="key key--fn" data-insert="cos(" title="cosseno">cos</button>
+        <button type="button" class="key key--fn" data-insert="tan(" title="tangente">tan</button>
+        <button type="button" class="key key--fn" data-insert="asin(" title="arco-seno">asin</button>
+        <button type="button" class="key key--fn" data-insert="atan(" title="arco-tangente">atan</button>
+
+        <button type="button" class="key key--fn" data-insert="1/(" title="inverso">1/x</button>
+        <button type="button" class="key key--fn" data-insert="abs(" title="valor absoluto">|x|</button>
+        <button type="button" class="key key--fn" data-insert="%" title="resto da divisão (módulo)">mod</button>
+        <button type="button" class="key key--fn" data-insert="floor(" title="arredonda para baixo">⌊x⌋</button>
+        <button type="button" class="key key--fn" data-insert="ceil(" title="arredonda para cima">⌈x⌉</button>
+
+        <button type="button" class="key key--fn" data-insert="round(" title="arredondar">round</button>
+        <button type="button" class="key key--fn" data-insert="cbrt(" title="raiz cúbica">∛x</button>
+        <button type="button" class="key key--fn" data-insert="gcd(" title="máximo divisor comum">mdc</button>
+        <button type="button" class="key key--fn" data-insert="hypot(" title="hipotenusa">hip</button>
+        <button type="button" class="key key--fn" data-insert="," title="separa argumentos">,</button>
+      </div>
+
+      <div class="pad pad--main">
+        <button type="button" class="key key--danger" data-action="clear" title="Limpar tudo (Esc)">C</button>
+        <button type="button" class="key key--util" data-action="backspace" title="Apagar último (Backspace)">⌫</button>
+        <button type="button" class="key key--util" data-action="sign" title="Trocar o sinal">±</button>
+        <button type="button" class="key key--operator" data-insert="/" title="Dividir">÷</button>
+
+        <button type="button" class="key" data-insert="7">7</button>
+        <button type="button" class="key" data-insert="8">8</button>
+        <button type="button" class="key" data-insert="9">9</button>
+        <button type="button" class="key key--operator" data-insert="*" title="Multiplicar">×</button>
+
+        <button type="button" class="key" data-insert="4">4</button>
+        <button type="button" class="key" data-insert="5">5</button>
+        <button type="button" class="key" data-insert="6">6</button>
+        <button type="button" class="key key--operator" data-insert="-" title="Subtrair">−</button>
+
+        <button type="button" class="key" data-insert="1">1</button>
+        <button type="button" class="key" data-insert="2">2</button>
+        <button type="button" class="key" data-insert="3">3</button>
+        <button type="button" class="key key--operator" data-insert="+" title="Somar">+</button>
+
+        <button type="button" class="key" data-insert="(">(</button>
+        <button type="button" class="key" data-insert="0">0</button>
+        <button type="button" class="key" data-insert=".">,</button>
+        <button type="button" class="key key--equals" data-action="equals" title="Calcular (Enter)">=</button>
+      </div>
+
+      <footer class="calculator__footer">
+        <span id="engine">Cálculos executados no Python (biblioteca padrão)</span>
+      </footer>
+    </section>
+
+    <aside class="history" id="history-panel" aria-label="Histórico de cálculos">
+      <header class="history__header">
+        <h2>Histórico</h2>
+        <button type="button" class="link-button" id="clear-history">limpar</button>
+      </header>
+      <ol class="history__list" id="history-list"></ol>
+      <p class="history__empty" id="history-empty">
+        Nenhum cálculo ainda. Pressione <kbd>=</kbd> para começar.
+      </p>
+      <div class="history__hint">
+        <p><strong>Dicas</strong></p>
+        <ul>
+          <li><code>2(3+4)</code> multiplica automaticamente</li>
+          <li><code>2^10</code> é potência</li>
+          <li><code>sqrt(2)</code>, <code>log(100)</code>, <code>sin(30)</code></li>
+          <li>Teclado: números, <kbd>Enter</kbd>, <kbd>Esc</kbd>, <kbd>⌫</kbd></li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
